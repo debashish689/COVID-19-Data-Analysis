@@ -1,4 +1,5 @@
 # COVID-19-Data-Analysis
+
 This project is about colored data-stripe visualization of daily COVID-19 cases in different countries around the world in the timespan, starting from January 22, 2020 upto May 12, 2021: 
 
 The details of daily cumulative cases (in the above-specified timespan) of a country is stored in a file (country_name.txt) for that country. 
