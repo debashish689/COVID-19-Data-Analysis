@@ -1,0 +1,42 @@
+COVID-19 Data Analysis:
+
+This program presents a comparative visual analysis of COVID-19 cases in several countries around the world in the
+timespan, starting on January 22. 2020 and going up until May 12. 2021.
+
+1. At first the program reads the filenames in the 'COUNTRY_DIRECTORY' and makes a list-type variable, 'countries',
+  containing all the filenames(.txt). and another list-type variable, 'normalized_countries' is created containing
+  uppercase version of the above filenames.
+  
+2. Now for each filename in 'countries', the original file in the 'COUNTRY_DIRECTORY' is read and for each file a
+  list-type variable, 'list_of_cumulative_cases' containing number of cumulative cases for each day is created. And from
+  'list_of_cumulative_cases', another list, 'list_of_daily_cases' containing number of individual daily cases for each
+  day is created.
+  
+  And each 'list_of_daily_cases' is stored against corresponding country_name (obtained by omitting '.TXT' from each filename)
+  in the dictionary-type variable, 'countries_daily_data_dict' defined by 'country_name -> list_of_daily_cases' pair.
+  
+3. Now the user is instructed to enter country_names of his/her choice from the list of keys in the
+  'countries_daily_data_dict'. the user can enter the country_name in both upper and lower case. The entered valid
+  country_names (i.e. country_names for which data are available) are stored in a list, 'countries_to_compare'.
+
+  The analysis can be performed in two ways: 
+  mode 1: For doing analysis for last few days from the 'data ending date'.
+  mode 2: For doing analysis between any two dates within the range from 'data starting date' upto 'data ending date'.
+          The mode of analysis is determined by the user.
+          
+4. Now for each country in 'countries_to_compare', the corresponding section (in the range specified by the user)
+  of list of values from the 'countries_daily_data_dict' is obtained and stored in  corresponding list,
+  'list_of_data_to_compare' for that country.
+  
+5. The values in each 'list_of_data_to_compare' for each country in 'countries_to_compare' are converted to fractions of
+  the largest value and each set of fractions for each country is stored in corresponding list, 'daily_fractions' and
+  each 'daily_fractions' is stored under corresponding country_name in dictionary, 'countries_data_fractions', defined by
+  country_name -> 'daily_fractions'.
+  
+6. Now for each country / 'daily_fractions' pair in the 'countries_data_fractions', an image containing a series of
+  coloured data stripes (representing number of daily cases on each day relative to the highest daily cases for that
+  country) is created using 'daily_fractions' and for each country, its image is stored in the 'visualizations_dict'
+  dictionary.
+  
+7. At last all the images stored in 'visualizations_dict' are accessed one by one by each country_name and image for
+  each country is shown on screen and saved in the home_directory one after another.
