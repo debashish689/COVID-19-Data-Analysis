@@ -79,7 +79,7 @@ def main():
         countries_daily_data_dict[item[:-1]] = list_of_daily_cases
     print("")
     print("Comparative Visual Analysis of COVID-19 cases in several Countries in the timespan,\nstarting on " + DATA_START_DATE + " and going up until " + DATA_END_DATE + " : ")
-    print("")
+    print("")    
     countries_to_compare = get_countries(normalized_countries)
     if countries_to_compare:
         print("")
@@ -124,7 +124,7 @@ def main():
                     P = 0
                 else:
                     exit(0)
-
+            
             elif mode == 2:
                 """
                 The user is instructed to enter the start date, the entered date is checked for validity and range and 
@@ -135,8 +135,8 @@ def main():
                 in the above manner.
                 
                 Once valid and within-range start date and end date are received, the two dates are given as inputs to 
-                the function, 'check_order_of_dates_and_guide(start_date, end_date)' to check if the end date is a later
-                date than the start date. 
+                the function, 'check_order_of_dates_and_guide(start_date, end_date)' to check if the end date is same or
+                later date than the start date. 
                 """
                 print("")
                 start_date = input("Enter your start date in 'DD.MM.YYYY' format (Or press 'Enter' to exit): ")
@@ -162,7 +162,7 @@ def main():
                     The earlier number of days is subtracted from this number of days to obtain the number of days 
                     from start_date upto and including end_date.
                     The above method has been applied for calculating the number of days from any date upto and 
-                    including any later (than the former) date.
+                    including any later (than the former) or same date.
                     """
                     span1 = calculate_days_span(REFERENCE_DATE, start_date) - calculate_days_span(REFERENCE_DATE, DATA_START_DATE)
                     span2 = (calculate_days_span(REFERENCE_DATE, end_date) - calculate_days_span(REFERENCE_DATE, start_date)) + 1
@@ -175,7 +175,7 @@ def main():
                 exit(0)
         else:
             exit(0)
-
+                
         for country in countries_to_compare:
             """
              The data required for comparison is sliced and acquired (depending on the 'mode' and value or dates 
@@ -189,7 +189,7 @@ def main():
              
              And each "country -> 'visualization'" pair is stored in another dictionary, 'visualizations_dict'. 
             """
-            list_of_data = countries_daily_data_dict.get(country)
+            list_of_data = countries_daily_data_dict.get(country) 
             list_of_data_to_compare = list_of_data[(len(list_of_data) - N) : (len(list_of_data) - P)]
             daily_fractions = compute_daily_fractions(list_of_data_to_compare)
             countries_data_fractions[country] = daily_fractions
@@ -270,7 +270,8 @@ def check_date_validity(boundary_type, date):
 
     """
 
-    while not date[:2].isdigit() or not date[3:5].isdigit() or not date[-4:].isdigit() or len(date) != 10:
+    while (not date[:2].isdigit() or not date[3:5].isdigit() or not date[-4:].isdigit() or len(date) != 10) or (not((
+            date[2] == ".") and (date[5] == "."))):
         """
         This loop checks if the entered date is structurally valid (i.e. the date is in DD.MM.YYYY format and each 
         date-field is a collection of digits.
@@ -293,7 +294,8 @@ def check_date_validity(boundary_type, date):
         date = input("Enter your " + boundary_type + " date in 'DD.MM.YYYY' format (Or press 'Enter' to exit): ")
         if date == "":
             exit(0)
-        while not date[:2].isdigit() or not date[3:5].isdigit() or not date[-4:].isdigit() or len(date) != 10:
+        while (not date[:2].isdigit() or not date[3:5].isdigit() or not date[-4:].isdigit() or len(date) != 10) or (
+        not ((date[2] == ".") and (date[5] == "."))):
             """
             This loop checks if the entered date is structurally valid (i.e. the date is in DD.MM.YYYY format and each 
             date-field is a collection of digits.
@@ -324,12 +326,12 @@ def check_date_range(boundary_type, date):
         while ((int(date[-4:]) < int(DATA_START_DATE[-4:])) or (int(date[-4:]) > int(DATA_END_DATE[-4:])) or (
             ((int(date[-4:]) == int(DATA_START_DATE[-4:])) and (int(date[3:5]) == int(DATA_START_DATE[3:5])) and
             (int(date[0:2]) < int(DATA_START_DATE[0:2])))) or (((int(date[-4:]) == int(DATA_END_DATE[-4:])) and
-            (int(date[3:5]) == int(DATA_END_DATE[3:5])) and (int(date[0:2])) >= int(DATA_END_DATE[0:2])))) or (
+            (int(date[3:5]) == int(DATA_END_DATE[3:5])) and (int(date[0:2])) > int(DATA_END_DATE[0:2])))) or (
                 ((int(date[-4:]) == int(DATA_END_DATE[-4:])) and (int(date[3:5]) > int(DATA_END_DATE[3:5])))):
             """
             This loop checks the range of the start date.
             """
-            print("The Dates must be between " + DATA_START_DATE + " and " + DATA_END_DATE + " (both inclusive), \nThe end date can never be " + DATA_START_DATE + " and the start date can never be " + DATA_END_DATE + ".")
+            print("The Dates must be between " + DATA_START_DATE + " and " + DATA_END_DATE + " (both inclusive).")
             date = input("Enter your " + boundary_type + " date in 'DD.MM.YYYY' format (Or press 'Enter' to exit): ")
             if date:
                 date = check_date_validity(boundary_type, date)
@@ -338,13 +340,13 @@ def check_date_range(boundary_type, date):
     elif boundary_type == "end":
         while (int(date[-4:]) < int(DATA_START_DATE[-4:]))  or (int(date[-4:]) > int(DATA_END_DATE[-4:]))  or \
                 (((int(date[-4:]) == int(DATA_START_DATE[-4:])) and (int(date[3:5]) == int(DATA_START_DATE[3:5])) and
-                (int(date[0:2]) <= int(DATA_START_DATE[0:2])))) or (((int(date[-4:]) == int(DATA_END_DATE[-4:])) and
+                (int(date[0:2]) < int(DATA_START_DATE[0:2])))) or (((int(date[-4:]) == int(DATA_END_DATE[-4:])) and
                 (int(date[3:5]) == int(DATA_END_DATE[3:5])) and (int(date[0:2])) > int(DATA_END_DATE[0:2]))) or (
                 ((int(date[-4:]) == int(DATA_END_DATE[-4:])) and (int(date[3:5]) > int(DATA_END_DATE[3:5])))):
             """
             This loop checks the range of the end date.
             """
-            print("The Dates must be between " + DATA_START_DATE + " and " + DATA_END_DATE + " (both inclusive), \nThe end date can never be " + DATA_START_DATE + " and the start date can never be " + DATA_END_DATE + ".")
+            print("The Dates must be between " + DATA_START_DATE + " and " + DATA_END_DATE + " (both inclusive).")
             date = input("Enter your " + boundary_type + " date in 'DD.MM.YYYY' format (Or press 'Enter' to exit): ")
             if date:
                 date = check_date_validity(boundary_type, date)
@@ -358,8 +360,8 @@ def check_order_of_dates_and_guide(start_date, end_date):
     Two valid date-strings, start date and end date, specified by 'start_date' and 'end_date' respectively, are given
     to this function as inputs.
 
-    This function checks the order of the dates (i.e. if the date sprcified by 'end_date' is a later date than the date
-    specified by 'start_date').
+    This function checks the order of the dates (i.e. if the date sprcified by 'end_date' is a later or same date
+    than the date specified by 'start_date').
 
     With each entry, the validity and range of the date is also checked, and done accordingly.
 
@@ -371,13 +373,14 @@ def check_order_of_dates_and_guide(start_date, end_date):
     while (int(start_date[-4:]) > int(end_date[-4:])) or ((int(start_date[-4:]) == int(end_date[-4:])) and (
             int(start_date[3:5]) > int(end_date[3:5]))) or ((
             int(start_date[-4:]) == int(end_date[-4:]) and (int(start_date[3:5]) == int(end_date[3:5])) and (
-            int(start_date[0:2]) >= int(end_date[0:2])))):
+            int(start_date[0:2]) > int(end_date[0:2])))):
         if int(start_date[-4:]) > int(end_date[-4:]):
             print("The 'YYYY' of end-date must be of higher value than 'YYYY' of start-date.")
         elif ((int(start_date[-4:]) == int(end_date[-4:])) and (int(start_date[3:5]) > int(end_date[3:5]))):
             print("The 'MM' of end-date must be of higher value than 'MM' of start-date if both 'YYYY' values are same.")
-        else:
-            print("The 'DD' of end-date must be of higher value than 'DD' of start-date if both 'MM' values and both 'YYYY' values are same.")
+        elif ((int(start_date[-4:]) == int(end_date[-4:])) and (int(start_date[3:5]) == int(end_date[3:5])) and (
+            int(start_date[0:2]) > int(end_date[0:2]))):
+            print("The 'DD' of end-date must not be of lower value than 'DD' of start-date if both 'MM' values and both 'YYYY' values are same.")
         start_date = input("Enter your start date in 'DD.MM.YYYY' format (Or press 'Enter' to exit): ")
         if start_date:
             start_date = check_validity_and_range_of_date("start", start_date)
@@ -427,10 +430,10 @@ def calculate_days_span(start_date, end_date):
     N_non_leap = 0 # Stores the number of non leap-year full years (initialized to contain 0).
     start_date_list = start_date.split(".")
     end_date_list = end_date.split(".")
-    start_year = int(start_date_list[-1])
+    start_year = int(start_date_list[-1]) 
     start_month = int(start_date_list[1])
     start_day = int(start_date_list[0])
-    end_year = int(end_date_list[-1])
+    end_year = int(end_date_list[-1]) 
     end_month = int(end_date_list[1])
     end_day = int(end_date_list[0])
     end_year -= 1
